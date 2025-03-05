@@ -24,6 +24,8 @@ app.use("/auth", authRoutes);
 const travelsRoutes = require("./routes/travels.routes");
 app.use("/travels", travelsRoutes);
 
+const requestRoutes = require("./routes/request.routes");
+app.use("/request", requestRoutes);
 
 
 

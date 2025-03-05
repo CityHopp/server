@@ -12,6 +12,10 @@ const requestSchema = new Schema({
         type: String,
         enum: ["pending","accepted","rejected","cancelled"],
         default: "pending"
+    },
+    message: {
+        type: String,
+        default: "Hey wanna city hop together"
     }
 },
 {
