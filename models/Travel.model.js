@@ -3,6 +3,9 @@ const { Schema, model } = require("mongoose");
 // TODO: Please make sure you edit the User model to whatever makes sense in this case
 const travelSchema = new Schema(
   {
+    createdBy : {
+      type: Schema.Types.ObjectId, ref: "User"
+    },
     destination: {
       type: String,
       required: [true, "Destination is required."],
@@ -55,3 +58,7 @@ const travelSchema = new Schema(
 const Travel = model("Travel", travelSchema);
 
 module.exports = Travel;
+
+
+
+
