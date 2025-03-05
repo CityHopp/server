@@ -30,4 +30,31 @@ router.post("/",(req,res,next) =>{
           })
 
 });
+router.delete("/:travelsId", (req, res, next) => {
+    Travel.findByIdAndDelete(req.params.travelsId)
+      .then(() => {
+        return res.status(200).json({ message: "success" });
+      })
+      .catch((e) => next(e));
+  });
+
+router.patch("/:travelsId", (req, res, next) => {
+    Travel.findByIdAndUpdate(req.params.travelsId, req.body)
+      .then((updatedTravel) => {
+        res.status(200).json(updatedTravel);
+      })
+      .catch((e) => next(e));
+  });
+
+  router.get("/:travelsId", (req, res, next) => {
+    const { travelsId } = req.params;
+  
+    Travel.findById(travelsId)
+      .then((travel) => {
+        res.status(200).json(travel);
+      })
+      .catch((e) => next(e));
+  });
+  
+  
 module.exports = router;
