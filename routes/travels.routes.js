@@ -6,7 +6,7 @@ const Travel = require("../models/Travel.model");
 router.get("/", (req, res) => {
   Travel.find()
   .then((travelsFromDb) => {
-        res.status(200).json({data: travelsFromDb});
+        res.status(200).json(travelsFromDb);
       })
       .catch((e) => next(e));
 });
@@ -26,7 +26,7 @@ router.post("/",(req,res,next) =>{
         description:req.body.description
     })
         .then((newTravel) => {
-            res.status(200).json({data:newTravel});
+            res.status(200).json({newTravel});
           })
 
 });
