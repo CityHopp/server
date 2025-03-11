@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const Request = require("../models/Request.model");
+const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 router.get("/", (req, res, next) => {
   Request.find()
@@ -11,11 +12,17 @@ router.get("/", (req, res, next) => {
       .catch((e) => next(e));
 });
 
-router.post("/",(req,res,next) =>{
+
+router.post("/", isAuthenticated, (req, res,next) =>{
+
+
     Request.create({
-        from: req.body.from,
+        from: req.payload._id,
+
         for:req.body.for,
-        status:req.body.status,
+
+        status:"pending",
+
         message:req.body.message,
     })
         .then((newRequest) => {
