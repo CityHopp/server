@@ -1,61 +1,73 @@
 const express = require("express");
 const router = express.Router();
-
 const Travel = require("../models/Travel.model");
 
 router.get("/", (req, res) => {
   Travel.find()
-  .then((travelsFromDb) => {
-        res.status(200).json(travelsFromDb);
-      })
-      .catch((e) => next(e));
-});
-router.post("/",(req,res,next) =>{
-    Travel.create({
-        destination: req.body.destination,
-        startingCity:req.body.startingCity,
-        departingTime:req.body.departingTime,
-        date: req.body.date,
-        breaks: req.body.breaks,
-        petPolicy: req.body.petPolicy,
-        kidPolicy: req.body.kidPolicy,
-        smokingPolicy:req.body.smokingPolicy,
-        chitChatPolicy: req.body.chitChatPolicy,
-        stops:req.body.stops,
-        price: req.body.price,
-        description:req.body.description,
-        userId: req.user._id
+    .then((travelsFromDb) => {
+      res.status(200).json(travelsFromDb);
     })
-        .then((newTravel) => {
-            res.status(200).json({newTravel});
-          })
-
+    .catch((e) => {
+      console.error(e);
+      res.status(500).json({ error: "Error fetching travels" });
+    });
 });
-router.delete("/:travelsId", (req, res, next) => {
-    Travel.findByIdAndDelete(req.params.travelsId)
-      .then(() => {
-        return res.status(200).json({ message: "success" });
-      })
-      .catch((e) => next(e));
-  });
+router.get("/:id", (req, res) => {
+  const { id } = req.params;
 
-router.patch("/:travelsId", (req, res, next) => {
-    Travel.findByIdAndUpdate(req.params.travelsId, req.body)
-      .then((updatedTravel) => {
-        res.status(200).json(updatedTravel);
-      })
-      .catch((e) => next(e));
-  });
+  Travel.findById(id)
+    .then((travel) => {
+      if (!travel) {
+        return res.status(404).json({ error: "Travel not found" });
+      }
+      res.status(200).json(travel);
+    })
+    .catch((e) => {
+      console.error(e);
+      res.status(500).json({ error: "Error fetching travel details" });
+    });
+});
+router.post("/", (req, res) => {
+  const {
+    destination,
+    startingCity,
+    departingTime,
+    breaks,
+    petPolicy,
+    kidPolicy,
+    smokingPolicy,
+    chitChatPolicy,
+    stops,
+    price,
+    description,
+    createdBy,
+  } = req.body;
 
-  router.get("/:travelsId", (req, res, next) => {
-    const { travelsId } = req.params;
-  
-    Travel.findById(travelsId)
-      .then((travel) => {
-        res.status(200).json(travel);
-      })
-      .catch((e) => next(e));
-  });
-  
-  
+  if (!createdBy) {
+    return res.status(400).json({ error: "User ID is required" });
+  }
+
+  Travel.create({
+    destination,
+    startingCity,
+    departingTime,
+    breaks,
+    petPolicy,
+    kidPolicy,
+    smokingPolicy,
+    chitChatPolicy,
+    stops,
+    price,
+    description,
+    createdBy,
+  })
+    .then((newTravel) => {
+      res.status(201).json(newTravel);  // Return the newly created travel directly
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ error: "Error creating travel" });
+    });
+});
+
 module.exports = router;

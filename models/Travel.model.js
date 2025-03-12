@@ -1,11 +1,7 @@
 const { Schema, model } = require("mongoose");
 
-// TODO: Please make sure you edit the User model to whatever makes sense in this case
 const travelSchema = new Schema(
   {
-    createdBy : {
-      type: Schema.Types.ObjectId, ref: "User"
-    },
     destination: {
       type: String,
       required: [true, "Destination is required."],
@@ -15,46 +11,42 @@ const travelSchema = new Schema(
       required: [true, "Starting City is required."],
     },
     departingTime: {
-      type: Number,
+      type: Date,
       required: [true, "Starting time is required."],
     },
-    breaks:{
+    breaks: {
       type: Number,
       required: [true, "The number of break is required."],
     },
-    petPolicy:{
+    petPolicy: {
       type: Boolean,
     },
-    kidPolicy:{
+    kidPolicy: {
       type: Boolean,
     },
-    smokingPolicy:{
+    smokingPolicy: {
       type: Boolean,
     },
-    chitChatPolicy:{
+    chitChatPolicy: {
       type: Boolean,
     },
-    stops:{
+    stops: {
       type: Array,
     },
-    price:{
+    price: {
       type: Number,
       required: [true, "You need to enter the price."],
     },
-    description:{
+    description: {
       type: String,
-    }
-  },
-  {
-    // this second object adds extra properties: `createdAt` and `updatedAt`
-    timestamps: true,
+    },
+    createdBy: {
+      type: Schema.Types.ObjectId, 
+      ref: 'User', 
+      required: true, 
+    },
   }
 );
 
 const Travel = model("Travel", travelSchema);
-
 module.exports = Travel;
-
-
-
-
