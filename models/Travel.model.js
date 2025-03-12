@@ -18,10 +18,6 @@ const travelSchema = new Schema(
       type: Number,
       required: [true, "Starting time is required."],
     },
-    date: {
-      type: Date,
-      required: [true, "Date is required."],
-    },
     breaks:{
       type: Number,
       required: [true, "The number of break is required."],

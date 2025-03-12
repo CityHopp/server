@@ -23,7 +23,8 @@ router.post("/",(req,res,next) =>{
         chitChatPolicy: req.body.chitChatPolicy,
         stops:req.body.stops,
         price: req.body.price,
-        description:req.body.description
+        description:req.body.description,
+        userId: req.user._id
     })
         .then((newTravel) => {
             res.status(200).json({newTravel});
