@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Travel = require("../models/Travel.model");
 
+
 router.get("/", (req, res) => {
   Travel.find()
     .then((travelsFromDb) => {
@@ -12,10 +13,12 @@ router.get("/", (req, res) => {
       res.status(500).json({ error: "Error fetching travels" });
     });
 });
-router.get("/:id", (req, res) => {
-  const { id } = req.params;
 
-  Travel.findById(id)
+
+router.get("/:travelId", (req, res) => {
+  const { travelId } = req.params;
+
+  Travel.findById(travelId)
     .then((travel) => {
       if (!travel) {
         return res.status(404).json({ error: "Travel not found" });
@@ -27,6 +30,24 @@ router.get("/:id", (req, res) => {
       res.status(500).json({ error: "Error fetching travel details" });
     });
 });
+
+router.get("/request/:id", (req, res) => {
+  const { id } = req.params;
+
+  Travel.findById(id) 
+    .then((travel) => {
+      if (!travel) {
+        return res.status(404).json({ error: "Travel not found" });
+      }
+      res.status(200).json(travel); 
+    })
+    .catch((e) => {
+      console.error(e);
+      res.status(500).json({ error: "Error fetching requested travel" });
+    });
+});
+
+
 router.post("/", (req, res) => {
   const {
     destination,
@@ -62,7 +83,7 @@ router.post("/", (req, res) => {
     createdBy,
   })
     .then((newTravel) => {
-      res.status(201).json(newTravel);  // Return the newly created travel directly
+      res.status(201).json(newTravel); 
     })
     .catch((error) => {
       console.error(error);
