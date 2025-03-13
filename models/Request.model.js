@@ -6,7 +6,7 @@ const requestSchema = new Schema({
         type: Schema.Types.ObjectId, ref: "User"
     },
     for: {
-        type: Schema.Types.ObjectId, ref: "Travel"
+        type: Schema.Types.ObjectId, ref: "User"
     },
     status: {
         type: String,
